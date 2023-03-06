@@ -1,34 +1,12 @@
-name: Django CI
-
+name: Push to root folder on server
 on:
   push:
-    branches: [develop]
-  pull_request:
-    branches:
-      - develop
-  workflow_dispatch:
-
+    branches: main
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     python-version: [ '3.8.10', '3.9.0', '3.10.0' ]
-
+  deploy:
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
-
-      # - name: Set up Python ${{ matrix.python-version }}
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-          # python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
+      - name: Deploy to server
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run Tests
-        run: |
-          python manage.py test --noinput
+           cd /var/www/html/test/ && git pull
